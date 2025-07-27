@@ -8,11 +8,11 @@ class HashService(IHashService):
     def __init__(self, logger: Logger):
         self.__logger = logger
 
-    def hash(self, value: str) -> str:
+    async def hash(self, value: str) -> str:
         hashed_value = bcrypt.hashpw(value.encode(), bcrypt.gensalt())
-        self.__logger.info(f'Hash value {hashed_value}')
+        self.__logger.info(f'Hash value {hashed_value.decode()}')
         return hashed_value.decode()
 
-    def verify(self, hashed_value: str, plain_value: str) -> bool:
+    async def verify(self, hashed_value: str, plain_value: str) -> bool:
         self.__logger.info(f'Hash value {hashed_value}')
         return bcrypt.checkpw(plain_value.encode(), hashed_value.encode())
