@@ -23,17 +23,19 @@ def retry(
             current_delay = delay
             __logger: Logger = logger
 
+            func_name = getattr(func, '__qualname__', getattr(func, '__name__', 'unknown_function'))
+
             for attempt in range(1, retries + 1):
                 try:
-                    __logger.debug(f'Attempting {attempt} execution {func.__qualname__}')
+                    __logger.debug(f'Attempting {attempt} execution {func_name}')
                     return await func(*args, **kwargs)
                 except Exception as e:
                     __logger.debug(
-                        f'Error in {func.__qualname__}: {e} '
+                        f'Error in {func_name}: {e} '
                         f'(attempt {attempt} of {retries}). Retry in {current_delay:.1f} sec'
                     )
                     if attempt == retries:
-                        __logger.debug(f'All attempts for {func.__qualname__} exhausted.')
+                        __logger.debug(f'All attempts for {func_name} exhausted.')
                         raise
                     await asyncio.sleep(current_delay)
                     current_delay *= backoff
