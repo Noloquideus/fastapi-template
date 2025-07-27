@@ -18,7 +18,7 @@ log_formats = {
     'TEXT': LogFormat.TEXT,
 }
 
-logger = Logger(min_level=log_levels.get(settings.LOG_LEVEL, 'INFO'), log_format=log_formats.get(settings.LOG_FORMAT, 'JSON'))
+logger = Logger(min_level=log_levels.get(settings.LOG_LEVEL, LogLevel.INFO), log_format=log_formats.get(settings.LOG_FORMAT, LogFormat.JSON))
 
 
 async def get_logger() -> Logger:
