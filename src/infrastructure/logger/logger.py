@@ -66,9 +66,17 @@ class Logger:
         trace_id_var.set('N/A')
 
     def _prepare_log_data(self, level: LogLevel, message: str) -> Dict[str, Any]:
-        frame = inspect.currentframe().f_back.f_back.f_back
-        filename = frame.f_code.co_filename
-        line_number = frame.f_lineno
+        current_frame = inspect.currentframe()
+        if (current_frame and
+            current_frame.f_back and
+            current_frame.f_back.f_back and
+            current_frame.f_back.f_back.f_back):
+            frame = current_frame.f_back.f_back.f_back
+            filename = frame.f_code.co_filename
+            line_number = frame.f_lineno
+        else:
+            filename = "unknown"
+            line_number = 0
 
         log_data = {
             'timestamp': datetime.now().isoformat(),
