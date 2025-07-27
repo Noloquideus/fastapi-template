@@ -18,29 +18,37 @@ class LogLevel(Enum):
     def __eq__(self, other: object) -> bool:
         if isinstance(other, LogLevel):
             return self.value == other.value
-        return self.value == other
+        if isinstance(other, int):
+            return self.value == other
+        return NotImplemented
 
     def __ne__(self, other: object) -> bool:
-        if isinstance(other, LogLevel):
-            return self.value != other.value
-        return self.value != other
+        return not self.__eq__(other)
 
     def __lt__(self, other: object) -> bool:
         if isinstance(other, LogLevel):
             return self.value < other.value
-        return self.value < other
+        if isinstance(other, int):
+            return self.value < other
+        return NotImplemented
 
     def __le__(self, other: object) -> bool:
         if isinstance(other, LogLevel):
             return self.value <= other.value
-        return self.value <= other
+        if isinstance(other, int):
+            return self.value <= other
+        return NotImplemented
 
     def __gt__(self, other: object) -> bool:
         if isinstance(other, LogLevel):
             return self.value > other.value
-        return self.value > other
+        if isinstance(other, int):
+            return self.value > other
+        return NotImplemented
 
     def __ge__(self, other: object) -> bool:
         if isinstance(other, LogLevel):
             return self.value >= other.value
-        return self.value >= other
+        if isinstance(other, int):
+            return self.value >= other
+        return NotImplemented
