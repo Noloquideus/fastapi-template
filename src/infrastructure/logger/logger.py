@@ -23,7 +23,7 @@ class Logger:
     _instance = None
     __default_format = LogFormat.TEXT
 
-    def __new__(cls, *args, **kwargs):
+    def __new__(cls, *args, **kwargs) -> 'Logger':
         if cls._instance is None:
             cls._instance = super(Logger, cls).__new__(cls)
         return cls._instance
@@ -38,30 +38,33 @@ class Logger:
         self.min_level = min_level
         self.id_generator = id_generator
 
-    def set_format(self, log_format: LogFormat):
+    def set_format(self, log_format: LogFormat) -> None:
         """Set log format using LogFormat enum"""
         if not isinstance(log_format, LogFormat):
             raise ValueError('Log format must be an instance of LogFormat enum')
 
         self.log_format = log_format
 
-    def set_min_level(self, level: LogLevel):
+    def set_min_level(self, level: LogLevel) -> None:
         self.min_level = level
 
     def new_trace_id(self) -> str:
         """Create and set new trace_id in context"""
-        trace_id = self.id_generator()
+        if self.id_generator is None:
+            trace_id = str(uuid4())
+        else:
+            trace_id = self.id_generator()
         trace_id_var.set(trace_id)
         return trace_id
 
-    def set_trace_id(self, trace_id: str):
+    def set_trace_id(self, trace_id: str) -> None:
         """Set existing trace_id in context"""
         trace_id_var.set(trace_id)
 
     def get_trace_id(self) -> str:
         return trace_id_var.get()
 
-    def clear_trace_id(self):
+    def clear_trace_id(self) -> None:
         """Clear the trace_id in the context"""
         trace_id_var.set('N/A')
 
@@ -92,7 +95,7 @@ class Logger:
 
         return log_data
 
-    def _log(self, level: LogLevel, message: str):
+    def _log(self, level: LogLevel, message: str) -> None:
         if level >= self.min_level:
             log_data = self._prepare_log_data(level, message)
 
@@ -110,23 +113,23 @@ class Logger:
 
             self._write(log_message)
 
-    def _write(self, message: str):
+    def _write(self, message: str) -> None:
         sys.stdout.write(message + "\n")
 
-    def debug(self, message: str):
+    def debug(self, message: str) -> None:
         self._log(LogLevel.DEBUG, message)
 
-    def info(self, message: str):
+    def info(self, message: str) -> None:
         self._log(LogLevel.INFO, message)
 
-    def warning(self, message: str):
+    def warning(self, message: str) -> None:
         self._log(LogLevel.WARNING, message)
 
-    def error(self, message: str):
+    def error(self, message: str) -> None:
         self._log(LogLevel.ERROR, message)
 
-    def critical(self, message: str):
+    def critical(self, message: str) -> None:
         self._log(LogLevel.CRITICAL, message)
 
-    def exception(self, message: str):
+    def exception(self, message: str) -> None:
         self._log(LogLevel.EXCEPTION, message)

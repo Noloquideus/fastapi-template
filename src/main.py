@@ -2,6 +2,7 @@ from contextlib import asynccontextmanager
 from typing import AsyncGenerator
 from fastapi import FastAPI, Depends, HTTPException, APIRouter, status
 from fastapi.openapi.docs import get_swagger_ui_html, get_redoc_html
+from fastapi.responses import HTMLResponse
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from src.application.domain.exceptions import ImmutableAttributeError, IncomparableObjectError, SealedClassError
 from src.infrastructure.logger import logger
@@ -35,7 +36,7 @@ app: FastAPI = FastAPI(
 security = HTTPBasic(description='Basic Authentication')
 
 # Function to verify user credentials
-async def verify_credentials(credentials: HTTPBasicCredentials = Depends(security)):
+async def verify_credentials(credentials: HTTPBasicCredentials = Depends(security)) -> None:
     """
     Validates the user's credentials using a hashed password.
     """
@@ -59,7 +60,7 @@ app.add_exception_handler(SealedClassError, sealed_class_error_handler)
 
 
 @app.get('/docs', include_in_schema=False)
-async def custom_swagger_ui_html(_credentials: HTTPBasicCredentials = Depends(verify_credentials)):
+async def custom_swagger_ui_html(_credentials: HTTPBasicCredentials = Depends(verify_credentials)) -> HTMLResponse:
     """
     Custom Swagger documentation, protected with basic authentication.
     """
@@ -72,7 +73,7 @@ async def custom_swagger_ui_html(_credentials: HTTPBasicCredentials = Depends(ve
     )
 
 @app.get('/redoc', include_in_schema=False)
-async def custom_redoc_html(_credentials: HTTPBasicCredentials = Depends(verify_credentials)):
+async def custom_redoc_html(_credentials: HTTPBasicCredentials = Depends(verify_credentials)) -> HTMLResponse:
     """
     Custom ReDoc documentation, protected with basic authentication.
     """
@@ -83,7 +84,7 @@ async def custom_redoc_html(_credentials: HTTPBasicCredentials = Depends(verify_
     )
 
 @app.get('/ping')
-async def ping():
+async def ping() -> dict[str, str]:
     """
     Health check endpoint to verify API is running.
     """

@@ -9,38 +9,38 @@ class LogLevel(Enum):
     CRITICAL = 50
     EXCEPTION = 60
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.name
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"[{self.value}, '{self.name}']"
 
-    def __eq__(self, other):
+    def __eq__(self, other: object) -> bool:
         if isinstance(other, LogLevel):
             return self.value == other.value
         return self.value == other
 
-    def __ne__(self, other):
+    def __ne__(self, other: object) -> bool:
         if isinstance(other, LogLevel):
             return self.value != other.value
         return self.value != other
 
-    def __lt__(self, other):
+    def __lt__(self, other: object) -> bool:
         if isinstance(other, LogLevel):
             return self.value < other.value
         return self.value < other
 
-    def __le__(self, other):
+    def __le__(self, other: object) -> bool:
         if isinstance(other, LogLevel):
             return self.value <= other.value
         return self.value <= other
 
-    def __gt__(self, other):
+    def __gt__(self, other: object) -> bool:
         if isinstance(other, LogLevel):
             return self.value > other.value
         return self.value > other
 
-    def __ge__(self, other):
+    def __ge__(self, other: object) -> bool:
         if isinstance(other, LogLevel):
             return self.value >= other.value
         return self.value >= other
