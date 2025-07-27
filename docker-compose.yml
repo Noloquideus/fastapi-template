@@ -1,0 +1,60 @@
+services:
+  api:
+    build: .
+    container_name: ${CONTAINER_NAME:-fastapi_template}
+    image: ${IMAGE_NAME:-fastapi_template}:${IMAGE_TAG:-latest}
+    labels:
+      app_name: ${APPLICATION_NAME:-FastAPI-Template}
+    ports:
+      - "${APP_PORT:-8000}:8000"
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
+    env_file:
+      - .env
+    command: >
+      sh -c "
+        sleep 5 &&
+        alembic upgrade head &&
+        granian --interface asgi --host 0.0.0.0 --port 8000 --workers ${WORKERS:-4} src.main:app
+      "
+    networks:
+      - app_network
+    depends_on:
+      - postgres
+    restart: unless-stopped
+
+  postgres:
+    container_name: ${DB_CONTAINER_NAME:-fastapi_postgres}
+    image: postgres:${POSTGRES_VERSION:-17}-alpine
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_USER=${DATABASE_USER}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+      - POSTGRES_DB=${DATABASE_NAME}
+      - POSTGRES_INITDB_ARGS=--encoding=UTF-8 --lc-collate=C --lc-ctype=C
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    ports:
+      - "${DATABASE_EXTERNAL_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app_network
+    restart: unless-stopped
+    command: >
+      postgres
+      -c ssl=off
+      -c log_statement=all
+      -c log_destination=stderr
+      -c log_min_duration_statement=0
+      -c shared_preload_libraries=''
+
+networks:
+  app_network:
+    driver: bridge
+    name: ${NETWORK_NAME:-fastapi_network}
+
+volumes:
+  postgres_data:
+    name: ${POSTGRES_VOLUME_NAME:-fastapi_postgres_data}
