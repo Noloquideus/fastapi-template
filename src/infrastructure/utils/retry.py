@@ -8,7 +8,7 @@ def retry(
     retries: int = 3,
     delay: float = 1.0,
     backoff: float = 2.0,
-):
+) -> Callable[[Callable[..., Awaitable[Any]]], Callable[..., Awaitable[Any]]]:
     """
     Decorator for retrying an async function on any exception.
     :param retries: Number of retries.
@@ -16,10 +16,10 @@ def retry(
     :param backoff: Multiplier to increase the delay after each failed retries.
     """
 
-    def decorator(func: Callable[..., Awaitable[Any]]):
+    def decorator(func: Callable[..., Awaitable[Any]]) -> Callable[..., Awaitable[Any]]:
 
         @functools.wraps(func)
-        async def wrapper(*args, **kwargs):
+        async def wrapper(*args: Any, **kwargs: Any) -> Any:
             current_delay = delay
             __logger: Logger = logger
 
