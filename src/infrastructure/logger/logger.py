@@ -23,7 +23,7 @@ class Logger:
     _instance = None
     __default_format = LogFormat.TEXT
 
-    def __new__(cls, *args, **kwargs) -> 'Logger':
+    def __new__(cls, *args: Any, **kwargs: Any) -> 'Logger':
         if cls._instance is None:
             cls._instance = super(Logger, cls).__new__(cls)
         return cls._instance
