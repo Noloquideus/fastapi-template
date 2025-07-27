@@ -1,16 +1,18 @@
 import uuid
-from fastapi import Request
+from typing import Any, Callable, Awaitable
+from fastapi import Request, Response
 from starlette.middleware.base import BaseHTTPMiddleware
+from starlette.applications import Starlette
 from src.infrastructure.logger import Logger
 from src.settings import settings
 
 
 class TraceIDMiddleware(BaseHTTPMiddleware):
-    def __init__(self, app, logger: Logger):
+    def __init__(self, app: Starlette, logger: Logger) -> None:
         super().__init__(app)
         self.logger = logger
 
-    async def dispatch(self, request: Request, call_next):
+    async def dispatch(self, request: Request, call_next: Callable[[Request], Awaitable[Response]]) -> Response:
 
         if request.url.path in settings.EXCLUDED_PATHS:
             return await call_next(request)
