@@ -5,7 +5,7 @@ class SealedClassError(TypeError):
     """Raised when attempting to inherit from a sealed class."""
     __slots__ = ['_status_code', '_message']
 
-    def __init__(self, status_code: StatusCode, message: str):
+    def __init__(self, message: str, status_code: StatusCode = StatusCode.INTERNAL_SERVER_ERROR.value):
         self._status_code = status_code
         self._message = message
 
