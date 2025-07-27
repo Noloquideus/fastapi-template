@@ -1,4 +1,5 @@
 from abc import ABC
+from typing import Any
 from src.application.domain.exceptions import ImmutableAttributeError
 
 
@@ -11,7 +12,7 @@ class Immutable(ABC):
     consistent state after creation.
     """
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         """
         Initializes the Immutable object. Sets the '_frozen' flag to False initially,
         allowing attribute setting during initialization. After initialization,
@@ -21,7 +22,7 @@ class Immutable(ABC):
         super().__init__(*args, **kwargs)
         self._frozen = True
 
-    def __setattr__(self, key, value):
+    def __setattr__(self, key: str, value: Any) -> None:
         """
         Prevents modification of attributes once the '_frozen' flag is set to True.
         Raises:
