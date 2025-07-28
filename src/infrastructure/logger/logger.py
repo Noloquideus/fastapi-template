@@ -14,6 +14,7 @@ trace_id_var: ContextVar[str] = ContextVar('trace_id', default='N/A')
 
 
 class Logger:
+
     """
     Synchronous custom logger with ContextVar support for trace_id.
     Supports JSON and text logging formats.
@@ -68,7 +69,7 @@ class Logger:
         """Clear the trace_id in the context"""
         trace_id_var.set('N/A')
 
-    def _prepare_log_data(self, level: LogLevel, message: str) -> Dict[str, Any]:
+    def _prepare_log_data(self, level: LogLevel, message: str) -> dict[str, Any]:
         current_frame = inspect.currentframe()
         if (current_frame and
             current_frame.f_back and
