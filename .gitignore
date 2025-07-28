@@ -1,0 +1,16 @@
+.idea/
+venv/
+__pycache__/
+.ruff_cache/
+.mypy_cache
+.pytest_cache
+.vscode/
+.pycharm/
+/venv/
+/.idea/
+*.log
+*.pyc
+*.swp
+.DS_Store
+.editorconfig
+.env
