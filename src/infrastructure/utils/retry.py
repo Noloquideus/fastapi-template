@@ -9,6 +9,7 @@ def retry(
     delay: float = 1.0,
     backoff: float = 2.0,
 ) -> Callable[[Callable[..., Awaitable[Any]]], Callable[..., Awaitable[Any]]]:
+
     """
     Decorator for retrying an async function on any exception.
     :param retries: Number of retries.
