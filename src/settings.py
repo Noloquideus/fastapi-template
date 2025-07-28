@@ -37,24 +37,24 @@ class Settings(BaseSettings):
     # ===== Redis =====
     REDIS_HOST: str = Field(default='localhost', description="Redis host")
     REDIS_PORT: int = Field(default=6379, ge=1, le=65535, description="Redis port")
-    REDIS_PASSWORD: Optional[str] = Field(default=None, description="Redis password")
+    REDIS_PASSWORD: str | None = Field(default=None, description="Redis password")
     REDIS_DB: int = Field(default=0, ge=0, description="Redis database")
 
     # ===== File Storage =====
     UPLOAD_DIR: str = Field(default='uploads', description="Upload directory")
     MAX_FILE_SIZE: int = Field(default=10 * 1024 * 1024, description="Max file size")
 
-    S3_ENDPOINT: Optional[str] = Field(default=None, description="S3 endpoint")
-    S3_ACCESS_KEY: Optional[str] = Field(default=None, description="S3 access key")
-    S3_SECRET_KEY: Optional[str] = Field(default=None, description="S3 secret key")
-    S3_BUCKET_NAME: Optional[str] = Field(default=None, description="S3 bucket name")
+    S3_ENDPOINT: str | None = Field(default=None, description="S3 endpoint")
+    S3_ACCESS_KEY: str | None = Field(default=None, description="S3 access key")
+    S3_SECRET_KEY: str | None = Field(default=None, description="S3 secret key")
+    S3_BUCKET_NAME: str | None = Field(default=None, description="S3 bucket name")
     S3_REGION: str = Field(default='us-east-1', description="S3 region")
 
     # ===== External APIs =====
-    SMTP_HOST: Optional[str] = Field(default=None, description="SMTP host")
+    SMTP_HOST: str | None = Field(default=None, description="SMTP host")
     SMTP_PORT: int = Field(default=587, description="SMTP port")
-    SMTP_USERNAME: Optional[str] = Field(default=None, description="SMTP username")
-    SMTP_PASSWORD: Optional[str] = Field(default=None, description="SMTP password")
+    SMTP_USERNAME: str | None = Field(default=None, description="SMTP username")
+    SMTP_PASSWORD: str | None = Field(default=None, description="SMTP password")
     SMTP_TLS: bool = Field(default=True, description="SMTP TLS")
 
     # ===== Logging =====
