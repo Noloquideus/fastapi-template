@@ -37,9 +37,7 @@ security = HTTPBasic(description='Basic Authentication')
 
 # Function to verify user credentials
 async def verify_credentials(credentials: HTTPBasicCredentials = Depends(security)) -> None:
-    """
-    Validates the user's credentials using a hashed password.
-    """
+    """Validates the user's credentials using a hashed password."""
     correct_username = settings.DOCS_USERNAME  # Username
     correct_password = settings.DOCS_PASSWORD  # Password hash
 
@@ -61,9 +59,7 @@ app.add_exception_handler(SealedClassError, sealed_class_error_handler)
 
 @app.get('/docs', include_in_schema=False)
 async def custom_swagger_ui_html(_credentials: HTTPBasicCredentials = Depends(verify_credentials)) -> HTMLResponse:
-    """
-    Custom Swagger documentation, protected with basic authentication.
-    """
+    """Custom Swagger documentation, protected with basic authentication."""
     return get_swagger_ui_html(
         openapi_url=getattr(app, 'openapi_url', '/openapi.json'),
         title=getattr(app, 'title', 'FastAPI') + ' - Swagger UI',
@@ -74,9 +70,7 @@ async def custom_swagger_ui_html(_credentials: HTTPBasicCredentials = Depends(ve
 
 @app.get('/redoc', include_in_schema=False)
 async def custom_redoc_html(_credentials: HTTPBasicCredentials = Depends(verify_credentials)) -> HTMLResponse:
-    """
-    Custom ReDoc documentation, protected with basic authentication.
-    """
+    """Custom ReDoc documentation, protected with basic authentication."""
     return get_redoc_html(
         openapi_url=getattr(app, 'openapi_url', '/openapi.json'),
         title=getattr(app, 'title', 'FastAPI') + ' - ReDoc',
@@ -85,7 +79,5 @@ async def custom_redoc_html(_credentials: HTTPBasicCredentials = Depends(verify_
 
 @app.get('/ping')
 async def ping() -> dict[str, str]:
-    """
-    Health check endpoint to verify API is running.
-    """
+    """Health check endpoint to verify API is running."""
     return {'message': 'pong', 'status': 'ok'}
