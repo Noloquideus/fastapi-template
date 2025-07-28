@@ -1,0 +1,244 @@
+# Конфигурация Bandit для анализа безопасности Python кода
+# https://bandit.readthedocs.io/en/latest/config.html
+
+# Тесты для включения/исключения
+tests:
+  # Включить все тесты
+  - '*'
+
+# Пропустить следующие тесты (по ID или имени)
+skips:
+  # B101: assert_used - разрешаем assert в тестах
+  - B101
+  # B601: paramiko_calls - если используем paramiko
+  # - B601
+  # B311: random - если используем random для не-криптографических целей
+  # - B311
+
+# Исключить файлы и директории
+exclude_dirs:
+  - '*/venv/*'
+  - '*/env/*'
+  - '*/.venv/*'
+  - '*/.env/*'
+  - '*/node_modules/*'
+  - '*/__pycache__/*'
+  - '*/.mypy_cache/*'
+  - '*/.pytest_cache/*'
+  - '*/.ruff_cache/*'
+  - '*/migrations/*'
+  - '*/alembic/versions/*'
+  - '*/tests/*'  # Исключаем тесты, т.к. там могут быть специальные конструкции
+
+# Уровень серьезности для отчета
+severity:
+  - low
+  - medium
+  - high
+
+# Уровень уверенности в проблеме
+confidence:
+  - low
+  - medium
+  - high
+
+# Форматы вывода
+# json, csv, txt, html, xml, yaml
+# format: json
+
+# Специфические настройки для тестов
+
+# B101: Test for use of assert
+assert_used:
+  skips: ['*/test_*.py', '*/*test*.py', '*/tests/*']
+
+# B102: Test for exec use
+exec_used:
+  # Разрешить exec в конкретных файлах (если нужно)
+  # skips: ['admin.py']
+
+# B103: Test for setting a bad file permissions
+set_bad_file_permissions:
+  # Проверять на небезопасные права файлов
+
+# B104: Test for binding to all interfaces
+hardcoded_bind_all_interfaces:
+  # Предупреждать о привязке ко всем интерфейсам
+
+# B105: Test for use of hard coded password strings
+hardcoded_password_string:
+  # Искать захардкоженные пароли
+  word_list: ['password', 'pass', 'passwd', 'pwd', 'secret', 'key', 'token']
+
+# B106: Test for use of hard coded password function arguments
+hardcoded_password_funcarg:
+  # Проверять аргументы функций на пароли
+  word_list: ['password', 'pass', 'passwd', 'pwd', 'secret', 'key', 'token']
+
+# B107: Test for use of hard coded password default arguments
+hardcoded_password_default:
+  # Проверять значения по умолчанию на пароли
+  word_list: ['password', 'pass', 'passwd', 'pwd', 'secret', 'key', 'token']
+
+# B108: Test for insecure usage of tmp files
+tmp_dirs:
+  - /tmp
+  - /var/tmp
+  - /dev/shm
+
+# B112: Test for a continue in the except block
+try_except_continue:
+  check_typed_exception: true
+
+# B201: Test for use of flask debug mode
+flask_debug_true:
+
+# B301: Test for pickle usage
+pickle:
+  # Предупреждать об использовании pickle
+
+# B302: Test for deprecated marshal module
+marshal:
+
+# B303: Test for deprecated MD5 usage
+md5:
+
+# B304: Test for deprecated and insecure ciphers
+insecure_ciphers:
+  - DES
+  - RC4
+  - MD2
+  - MD4
+
+# B305: Test for deprecated and insecure hash functions
+insecure_hash_functions:
+  - md2
+  - md4
+  - md5
+  - sha1
+
+# B306: Test for deprecated mktemp usage
+mktemp:
+
+# B307: Test for deprecated eval usage
+eval:
+
+# B308: Test for deprecated mark_safe usage
+mark_safe:
+
+# B309: Test for deprecated httpsconnection usage
+httpsconnection:
+
+# B310: Test for deprecated urllib.urlopen
+urllib_urlopen:
+
+# B311: Test for deprecated random usage
+random:
+  # Разрешить random для не-криптографических целей
+  # standard_library_extensions:
+  #   - 'random.SystemRandom'
+
+# B312: Test for deprecated telnetlib usage
+telnetlib:
+
+# B313: Test for deprecated xml usage
+xml:
+  # Проверять небезопасное использование XML
+
+# B314: Test for deprecated xml usage
+xml_bad_cElementTree:
+
+# B315: Test for deprecated xml usage
+xml_bad_ElementTree:
+
+# B316: Test for deprecated xml usage
+xml_bad_expatreader:
+
+# B317: Test for deprecated xml usage
+xml_bad_expatbuilder:
+
+# B318: Test for deprecated xml usage
+xml_bad_sax:
+
+# B319: Test for deprecated xml usage
+xml_bad_minidom:
+
+# B320: Test for deprecated xml usage
+xml_bad_etree:
+
+# B321: Test for deprecated ftp usage
+ftp:
+
+# B322: Test for deprecated input usage
+input:
+
+# B323: Test for unverified context usage
+unverified_context:
+
+# B324: Test for hashlib usage without usedforsecurity parameter
+hashlib_new_insecure_functions:
+
+# B325: Test for tempfile usage
+tempfile:
+
+# Настройки для различных плагинов
+
+# Django specific settings
+django_extra_used:
+
+# Flask specific settings
+flask_debug_true:
+
+# SQL specific settings
+hardcoded_sql_expressions:
+
+# Shell injection settings
+shell_injection:
+  # Проверять инъекции через shell команды
+  shell_wrappers:
+    - os.system
+    - os.popen
+    - subprocess.call
+    - subprocess.run
+    - subprocess.Popen
+
+# Настройки для генерации отчетов
+reports:
+  # Включить детальные отчеты
+  include_nosec: false
+  
+# Специальные исключения для FastAPI приложения
+fastapi:
+  # Разрешить некоторые практики для FastAPI
+  allow_debug_routes: false
+  allow_test_client: true
+
+# Исключения для specific файлов
+per_file_ignores:
+  # Настройки (settings.py) - разрешить некоторые практики
+  "src/settings.py":
+    - B105  # hardcoded_password_string
+    - B106  # hardcoded_password_funcarg
+    
+  # Конфигурационные файлы
+  "*/config.py":
+    - B105
+    - B106
+    
+  # Тестовые файлы
+  "*/test_*.py":
+    - B101  # assert_used
+    - B311  # random
+    
+  # Миграции базы данных
+  "*/migrations/*.py":
+    - B608  # hardcoded_sql_expressions
+    
+  # Alembic миграции
+  "*/alembic/versions/*.py":
+    - B608  # hardcoded_sql_expressions
+
+# Настройки логирования
+logging:
+  level: INFO
+  format: '%(asctime)s - %(name)s - %(levelname)s - %(message)s' 
