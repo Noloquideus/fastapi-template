@@ -170,67 +170,67 @@ All settings are managed through environment variables in `.env` file. Main sett
 - `CORS_ORIGINS` - allowed origins (comma-separated)
 - `CORS_ALLOW_CREDENTIALS` - allow credentials
 
-## 🧪 Тестирование
+## 🧪 Testing
 
 ```bash
-# Запуск всех тестов
+# Run all tests
 poetry run pytest
 
-# Запуск с покрытием
+# Run with coverage
 poetry run pytest --cov=src
 
-# Запуск конкретного теста
+# Run specific test
 poetry run pytest tests/test_example.py::test_function
 ```
 
-## 📊 Качество кода
+## 📊 Code Quality
 
-Проект настроен для поддержания высокого качества кода:
+The project is configured to maintain high code quality:
 
 ```bash
-# Линтинг и форматирование
+# Linting and formatting
 poetry run ruff check src/
 poetry run ruff format src/
 
-# Проверка типов
+# Type checking
 poetry run mypy src/
 
-# Проверка безопасности
+# Security checking
 poetry run bandit -r src/
 ```
 
-## 🚀 Развертывание
+## 🚀 Deployment
 
-### Production с Docker
+### Production with Docker
 
 ```bash
-# Сборка образа
+# Build image
 docker build -t fastapi-template:latest .
 
-# Запуск контейнера
+# Run container
 docker run -p 8000:8000 --env-file .env fastapi-template:latest
 ```
 
-### Environment Variables для Production
+### Environment Variables for Production
 
 ```env
-# Изменить на production значения
+# Change to production values
 LOG_LEVEL=INFO
 LOG_FORMAT=JSON
 DATABASE_ECHO=false
 CORS_ORIGINS=https://yourdomain.com
 ```
 
-## 📝 Логирование
+## 📝 Logging
 
-Приложение использует кастомный логгер с поддержкой:
+The application uses a custom logger with support for:
 
-- **Trace ID** - уникальный идентификатор для отслеживания запросов
-- **Структурированное логирование** - JSON формат для production
-- **Контекстные переменные** - автоматическое добавление trace_id в логи
-- **Измерение времени** - автоматическое логирование времени выполнения запросов
+- **Trace ID** - unique identifier for request tracking
+- **Structured Logging** - JSON format for production
+- **Context Variables** - automatic trace_id addition to logs
+- **Timing Measurement** - automatic logging of request execution time
 
-Пример использования:
+Usage example:
 ```python
 from src.infrastructure.logger import logger
 
@@ -241,35 +241,35 @@ logger.error("Database connection failed")
 ## 🛡️ Middleware
 
 ### TraceIDMiddleware
-Автоматически добавляет уникальный trace_id к каждому запросу для трассировки.
+Automatically adds a unique trace_id to each request for tracing.
 
 ### TimingMiddleware
-Измеряет и логирует время выполнения каждого запроса.
+Measures and logs the execution time of each request.
 
-## 🎯 Обработка исключений
+## 🎯 Exception Handling
 
-Централизованная обработка доменных исключений:
+Centralized handling of domain exceptions:
 
-- `ImmutableAttributeError` - попытка изменения неизменяемого атрибута
-- `IncomparableObjectError` - попытка сравнения несравнимых объектов
-- `SealedClassError` - попытка наследования от sealed класса
+- `ImmutableAttributeError` - attempt to modify immutable attribute
+- `IncomparableObjectError` - attempt to compare incomparable objects
+- `SealedClassError` - attempt to inherit from sealed class
 
-## 🤝 Вклад в проект
+## 🤝 Contributing
 
-1. Создайте форк проекта
-2. Создайте feature ветку (`git checkout -b feature/amazing-feature`)
-3. Сделайте коммит изменений (`git commit -m 'Add amazing feature'`)
-4. Отправьте в ветку (`git push origin feature/amazing-feature`)
-5. Создайте Pull Request
+1. Fork the project
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-## 📄 Лицензия
+## 📄 License
 
-Этот проект лицензирован под MIT License - см. файл [LICENSE](LICENSE) для деталей.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 👨‍💻 Автор
+## 👨‍💻 Author
 
 **Noloquideus** - [daniilmanukian@gmail.com](mailto:daniilmanukian@gmail.com)
 
 ---
 
-⭐ Поставьте звезду, если проект был полезен!
+⭐ Star this project if you found it helpful!
