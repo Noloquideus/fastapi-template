@@ -1,9 +1,9 @@
-from abc import ABC
 from typing import Any
+
 from src.application.domain.exceptions import ImmutableAttributeError
 
 
-class Immutable(ABC):
+class Immutable:
     """
     Base class for immutable objects.
 
@@ -14,9 +14,11 @@ class Immutable(ABC):
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         """
-        Initializes the Immutable object. Sets the '_frozen' flag to False initially,
-        allowing attribute setting during initialization. After initialization,
-        the '_frozen' flag is set to True, making the object immutable.
+        Initializes the Immutable object.
+
+        Sets the '_frozen' flag to False initially, allowing attribute setting
+        during initialization. After initialization, the '_frozen' flag is set
+        to True, making the object immutable.
         """
         self._frozen = False
         super().__init__(*args, **kwargs)
@@ -25,8 +27,9 @@ class Immutable(ABC):
     def __setattr__(self, key: str, value: Any) -> None:
         """
         Prevents modification of attributes once the '_frozen' flag is set to True.
+
         Raises:
-            SystemException: If an attempt is made to modify an immutable attribute.
+            ImmutableAttributeError: If an attempt is made to modify an immutable attribute.
         """
         if getattr(self, '_frozen', False):
             raise ImmutableAttributeError(f"Cannot modify immutable attribute '{key}'")
