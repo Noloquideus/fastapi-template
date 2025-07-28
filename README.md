@@ -1,43 +1,43 @@
 # FastAPI Template
 
-Современный шаблон FastAPI приложения с Clean Architecture, готовый к production использованию.
+Modern FastAPI application template with Clean Architecture, ready for production use.
 
-## 🏗️ Архитектура
+## 🏗️ Architecture
 
-Проект следует принципам **Clean Architecture** и разделен на три основных слоя:
+The project follows **Clean Architecture** principles and is divided into three main layers:
 
 ```
 src/
-├── application/      # Бизнес-логика и сценарии использования
-│   ├── abstractions/ # Интерфейсы репозиториев
-│   ├── contracts/    # Интерфейсы сервисов
-│   ├── domain/       # Доменные объекты и исключения
-│   └── services/     # Cервисы
-├── infrastructure/   # Внешние зависимости и технические детали
-│   ├── database/     # ORM модели и контекст БД
-│   ├── logger/       # Кастомный логгер с trace_id
-│   └── utils/        # Утилиты (retry, декораторы)
-└── presentation/     # Веб-слой и API
-    ├── handlers/     # Обработчики исключений
+├── application/      # Business logic and use cases
+│   ├── abstractions/ # Repository interfaces
+│   ├── contracts/    # Service interfaces
+│   ├── domain/       # Domain objects and exceptions
+│   └── services/     # Services
+├── infrastructure/   # External dependencies and technical details
+│   ├── database/     # ORM models and DB context
+│   ├── logger/       # Custom logger with trace_id
+│   └── utils/        # Utilities (retry, decorators)
+└── presentation/     # Web layer and API
+    ├── handlers/     # Exception handlers
     ├── middleware/   # Middleware (timing, trace_id)
-    ├── routing/      # Роутеры API
-    └── schemas/      # Pydantic схемы
+    ├── routing/      # API routers
+    └── schemas/      # Pydantic schemas
 ```
 
-## 🚀 Особенности
+## 🚀 Features
 
-- **Clean Architecture** - четкое разделение ответственности
-- **PostgreSQL** - основная база данных с SQLAlchemy ORM
-- **Alembic** - управление миграциями БД
-- **Docker** - контейнеризация и развертывание
-- **Кастомный логгер** - поддержка trace_id для трассировки запросов
-- **Middleware** - автоматическое добавление trace_id и измерение времени запросов
-- **Обработка исключений** - централизованная обработка доменных исключений
-- **Настройки** - управление конфигурацией через Pydantic Settings
-- **Документация API** - защищенная Basic Auth документация
-- **Готовность к production** - Docker, logging, мониторинг
+- **Clean Architecture** - clear separation of concerns
+- **PostgreSQL** - primary database with SQLAlchemy ORM
+- **Alembic** - database migration management
+- **Docker** - containerization and deployment
+- **Custom Logger** - trace_id support for request tracing
+- **Middleware** - automatic trace_id addition and request timing
+- **Exception Handling** - centralized domain exception handling
+- **Settings** - configuration management via Pydantic Settings
+- **API Documentation** - Basic Auth protected documentation
+- **Production Ready** - Docker, logging, monitoring
 
-## 🛠️ Технологический стек
+## 🛠️ Technology Stack
 
 - **Framework**: FastAPI 0.116+
 - **Database**: PostgreSQL + SQLAlchemy 2.0 + Asyncpg
@@ -48,24 +48,24 @@ src/
 - **Code Quality**: Ruff, MyPy, Bandit
 - **Python**: 3.12+
 
-## 📋 Предварительные требования
+## 📋 Prerequisites
 
 - Python 3.12+
-- Poetry (для управления зависимостями)
-- Docker & Docker Compose (опционально)
-- PostgreSQL (если запуск без Docker)
+- Poetry (for dependency management)
+- Docker & Docker Compose (optional)
+- PostgreSQL (if running without Docker)
 
-## ⚡ Быстрый старт
+## ⚡ Quick Start
 
-### 1. Клонирование репозитория
+### 1. Clone the repository
 
 ```bash
 git clone https://github.com/Noloquideus/fastapi-template
 ```
 
-### 2. Настройка переменных окружения
+### 2. Environment variables setup
 
-Обязательные переменные:
+Required variables:
 ```env
 # Database
 DATABASE_HOST=localhost
@@ -84,91 +84,91 @@ LOG_LEVEL=INFO
 LOG_FORMAT=TEXT
 ```
 
-### 3. Запуск с Docker Compose (рекомендуется)
+### 3. Run with Docker Compose (recommended)
 
 ```bash
-# Запуск всех сервисов
+# Start all services
 docker-compose up -d
 
-# Просмотр логов
+# View logs
 docker-compose logs -f api
 
-# Остановка
+# Stop services
 docker-compose down
 ```
 
-### 4. Локальная разработка
+### 4. Local development
 
 ```bash
-# Установка зависимостей
+# Install dependencies
 poetry install
 
-# Активация виртуального окружения
+# Activate virtual environment
 poetry shell
 
-# Запуск миграций
+# Run migrations
 alembic upgrade head
 
-# Запуск сервера разработки
+# Start development server
 uvicorn src.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-## 📖 API Документация
+## 📖 API Documentation
 
-После запуска приложения документация доступна по адресам:
+After starting the application, documentation is available at:
 
 - **Swagger UI**: http://localhost:8000/docs
 - **ReDoc**: http://localhost:8000/redoc
 - **Health Check**: http://localhost:8000/ping
 
-> **Примечание**: Документация защищена Basic Auth. Используйте `DOCS_USERNAME` и `DOCS_PASSWORD` из .env файла.
+> **Note**: Documentation is protected with Basic Auth. Use `DOCS_USERNAME` and `DOCS_PASSWORD` from .env file.
 
-## 🗄️ База данных
+## 🗄️ Database
 
-### Миграции
+### Migrations
 
 ```bash
-# Создание новой миграции
+# Create new migration
 alembic revision --autogenerate -m "Add new table"
 
-# Применение миграций
+# Apply migrations
 alembic upgrade head
 
-# Откат миграции
+# Rollback migration
 alembic downgrade -1
 
-# История миграций
+# Migration history
 alembic history
 ```
 
-### Подключение к БД
+### Database Connection
 
 ```bash
-# Подключение к PostgreSQL в Docker
+# Connect to PostgreSQL in Docker
 docker-compose exec postgres psql -U $DATABASE_USER -d $DATABASE_NAME
 ```
 
-## 🔧 Настройки
+## 🔧 Settings
 
-Все настройки управляются через переменные окружения в файле `.env`. Основные группы настроек:
+All settings are managed through environment variables in `.env` file. Main setting groups:
 
-### База данных
+### Database
 - `DATABASE_HOST`, `DATABASE_PORT`, `DATABASE_NAME`, `DATABASE_USER`, `DATABASE_PASSWORD`
 - `DATABASE_POOL_SIZE`, `DATABASE_MAX_OVERFLOW`, `DATABASE_POOL_TIMEOUT`
 
-### Безопасность
-- `SECRET_KEY` - ключ для JWT (минимум 32 символа)
-- `ALGORITHM` - алгоритм JWT (по умолчанию HS256)
+### Security
+- `SECRET_KEY` - JWT key (minimum 32 characters)
+- `ALGORITHM` - JWT algorithm (default HS256)
 - `ACCESS_TOKEN_EXPIRE_MINUTES`, `REFRESH_TOKEN_EXPIRE_DAYS`
-- `DOCS_USERNAME`, `DOCS_PASSWORD` - для доступа к документации
+- `DOCS_USERNAME`, `DOCS_PASSWORD` - for documentation access
 
-### Логирование
-- `LOG_LEVEL` - уровень логирования (DEBUG, INFO, WARNING, ERROR, CRITICAL)
-- `LOG_FORMAT` - формат логов (JSON или TEXT)
+### Logging
+- `LOG_LEVEL` - logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+- `LOG_FORMAT` - log format (JSON or TEXT)
 
 ### CORS
-- `CORS_ORIGINS` - разрешенные источники (через запятую)
-- `CORS_ALLOW_CREDENTIALS` - разрешить credentials
+- `CORS_ORIGINS` - allowed origins (comma-separated)
+- `CORS_ALLOW_CREDENTIALS` - allow credentials
 
 ## 🧪 Тестирование
 
