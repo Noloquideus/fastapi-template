@@ -3,8 +3,7 @@ from src.application.domain.exceptions import IncomparableObjectError
 
 
 class Incomparable(ABC):
-    """
-    Base class for objects that cannot be compared.
+    """Base class for objects that cannot be compared.
 
     Any attempt to perform comparison or hashing operations will raise an exception.
     This is useful for objects where comparison logic does not make sense.
