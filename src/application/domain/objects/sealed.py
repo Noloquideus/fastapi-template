@@ -4,8 +4,7 @@ from src.application.domain.exceptions import SealedClassError
 
 
 class Sealed(ABC):
-    """
-    Base class for sealed objects.
+    """Base class for sealed objects.
 
     Once a class is defined as sealed, it prevents further inheritance. Any subclass
     attempt will raise an exception, ensuring that the class hierarchy remains fixed.
@@ -13,8 +12,7 @@ class Sealed(ABC):
     _is_sealed = False
 
     def __init_subclass__(cls, **kwargs: Any) -> None:
-        """
-        Ensures that if the parent class is marked as sealed, any subclass attempt
+        """Ensures that if the parent class is marked as sealed, any subclass attempt
         will raise an exception.
 
         Raises:
